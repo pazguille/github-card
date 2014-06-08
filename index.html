@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>&lt;github-card&gt;: A web component to show a profile-card for your Github account.</title>
+    <link rel="stylesheet" href="src/normalize.css">
+    <link rel="stylesheet" href="src/styles.css">
+  </head>
+  <body>
+
+    <header>
+      <h1>&lt;github-card&gt;</h1>
+      <h2>A web component to show a profile-card for your Github account.</h2>
+    </header>
+    <output id="cards">
+      <figure>
+        <img src="src/assets/example.png" width="267" height="302">
+      </figure>
+    </output>
+
+    <form id="create-card">
+      <input id="username" type="text" placeholder="Enter a Github username">
+      <button>Show</button>
+    </form>
+
+    <footer>
+      <iframe id="twitter" allowtransparency="true" frameborder="0" width="100" height="22" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?text=<github-card>%3A%20A%20Web%20Component%20to%20show%20a%20profile-card%20for%20your%20Github%20account.&amp;url=http%3A%2F%2Fpazguille.github.io%2Fgithub-card"></iframe>
+
+      <a href="https://github.com/pazguille/github-card" id="github-ribbon"><img width="149" height="149" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+      by <a href="http://pazguille.me/">Guille Paz</a> with <a href="http://welovefrontend.org/" class="heart">❤</a>
+
+      <iframe id="github-button" src="http://ghbtns.com/github-btn.html?user=pazguille&amp;repo=github-card&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="152" height="30"></iframe>
+    </footer>
+
+    <script>
+      window.onload = function() {
+        var inp = document.querySelector('#username'),
+            frm = document.querySelector('#create-card'),
+            output = document.querySelector('#cards');
+
+        frm.addEventListener('submit', function(eve) {
+          var user = inp.value,
+              github;
+          eve.preventDefault();
+          if (user === '') { return false; }
+          github = document.createElement('github-card');
+          github.setAttribute('user', user);
+          output.innerHTML = '';
+          output.appendChild(github);
+        }, true);
+      };
+    </script>
+
+    <template id="github-template">
+      <style>
+        .user {
+          font-family: "Helvetica", Arial, sans-serif;
+          display: inline-block;
+          width: 265px;
+          height: 300px;
+          overflow: hidden;
+          border: 1px solid #D5D5D5;
+          border-radius: 6px;
+          position: relative;
+          background-color: #2E353C;
+          text-align: center;
+          color: #fff;
+          font-weight: 100;
+          transition: background 1000ms ease-out;
+        }
+
+        .user dl,
+        .user dd {
+          margin: 0;
+        }
+
+        .user dt {
+          display: none;
+        }
+
+        .user-data {
+          background: #fff url('webcomponent/github.png') no-repeat 5px 5px;
+          background-size: 25px;
+          height: 85px;
+        }
+
+        dd.user-avatar {
+          display: inline-block;
+          margin: 20px 0 10px;
+        }
+
+        .user-avatar img {
+          border-radius: 100%;
+          height: 120px;
+          width: 120px;
+          border: 3px solid #fff;
+          vertical-align: middle;
+          background-color: #fff;
+        }
+
+        dd.user-name,
+        dd.user-account {
+          margin: 5px 0;
+        }
+
+        .user-name {
+          font-size: 24px;
+        }
+
+        .user-account {
+          font-size: 16px;
+          color: #999;
+          margin: 5px 0;
+        }
+
+        .user-stats {
+          border-top: 1px groove #999;
+          position: relative;
+          top: 155px;
+        }
+
+        .user-stats dd {
+          padding: 10px 20px;
+        }
+
+        .user-repos,
+        .user-following,
+        .user-followers {
+          display: inline-block;
+          font-size: 22px;
+          color: #999;
+        }
+
+        .user-repos:after,
+        .user-following:after,
+        .user-followers:after {
+          content: attr(data-stats);
+          text-transform: uppercase;
+          display: block;
+          font-size: 11px;
+          color: #666;
+          font-weight: normal;
+          line-height: 1.7em;
+        }
+
+        .spinner {
+          background: url('webcomponent/spinner.gif') no-repeat center center;
+        }
+      </style>
+
+      <article class="user spinner">
+        <dl class="user-data" hidden>
+          <dt>Avatar:</dt>
+          <dd class="user-avatar">
+            <img src="">
+          </dd>
+
+          <dt>Fullname:</dt>
+          <dd class="user-name"></dd>
+
+          <dt>Account:</dt>
+          <dd class="user-account"></dd>
+        </dl>
+        <dl class="user-stats" hidden>
+          <dt>Repos</dt>
+          <dd class="user-repos" data-stats="repos"></dd>
+
+          <dt>Followers</dt>
+          <dd class="user-followers" data-stats="followers"></dd>
+        </dl>
+      <article>
+    </template>
+
+    <script>
+      var url = 'https://api.github.com/users/',
+          doc = document.currentScript.ownerDocument,
+          XgithubProto = Object.create(HTMLElement.prototype);
+
+      XgithubProto.getUser = function getJSON() {
+        var that = this,
+            xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url + this.getAttribute('user'));
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === xhr.DONE) {
+            status = xhr.status;
+
+            if ((status >= 200 && status < 300) || status === 304 || status === 0) {
+              response = JSON.parse(xhr.response || xhr.responseText);
+              that.fillUser(response);
+            }
+          }
+        };
+
+        xhr.send();
+      };
+
+      XgithubProto.fillUser = function fillUser(user) {
+        var usr = this.shadow;
+
+        usr.querySelector('.user-account').textContent = this.getAttribute('user');
+
+        usr.querySelector('.user-name').textContent = user.name;
+        usr.querySelector('.user-avatar img').src = user.avatar_url;
+        usr.querySelector('.user-repos').textContent = user.public_repos;
+        usr.querySelector('.user-followers').textContent = user.followers;
+
+        usr.querySelector('.user').classList.remove('spinner');
+        usr.querySelector('.user-data').removeAttribute('hidden');
+        usr.querySelector('.user-stats').removeAttribute('hidden');
+      };
+
+      XgithubProto.createdCallback = function() {
+        var template = doc.querySelector("#github-template"),
+            usr = template.content.cloneNode(true);
+        this.shadow = this.createShadowRoot();
+        this.shadow.appendChild(usr);
+      };
+
+      XgithubProto.attachedCallback = function() {
+        this.getUser();
+      };
+
+      var Xgithub = doc.registerElement('github-card', {'prototype': XgithubProto});
+    </script>
+  </body>
+</html>
