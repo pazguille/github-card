@@ -37,19 +37,28 @@
 
     <script>
       window.onload = function() {
+
         var inp = document.querySelector('#username'),
             frm = document.querySelector('#create-card'),
             output = document.querySelector('#cards');
 
-        frm.addEventListener('submit', function(eve) {
-          var user = inp.value,
-              github;
-          eve.preventDefault();
+        var createCard = function(user) {
+          var github;
           if (user === '') { return false; }
           github = document.createElement('github-card');
           github.setAttribute('user', user);
           output.innerHTML = '';
           output.appendChild(github);
+          window.history.pushState("object or string", "Title", location.pathname + "?user=" + user);
+        };
+
+        var user = new RegExp('[?&]'+encodeURIComponent("user")+'=([^&]*)').exec(location.search);
+        if (user) createCard(user[1]);
+
+        frm.addEventListener('submit', function(eve) {
+          var user = inp.value;
+          eve.preventDefault();
+          createCard(user);
         }, true);
       };
     </script>
@@ -175,6 +184,8 @@
     </template>
 
     <script>
+
+
       var url = 'https://api.github.com/users/',
           doc = document.currentScript.ownerDocument,
           XgithubProto = Object.create(HTMLElement.prototype);
