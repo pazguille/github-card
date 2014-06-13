@@ -97,6 +97,7 @@
   </style>
 
   <article class="user spinner">
+    <a class="user-github-page">
     <dl class="user-data" hidden>
       <dt>Avatar:</dt>
       <dd class="user-avatar">
@@ -116,6 +117,7 @@
       <dt>Followers</dt>
       <dd class="user-followers" data-stats="followers"></dd>
     </dl>
+    </a>
   <article>
 </template>
 
@@ -146,6 +148,7 @@
   XgithubProto.fillUser = function fillUser(user) {
     var usr = this.shadow;
 
+    usr.querySelector('.user-github-page').href = user.html_url;
     usr.querySelector('.user-account').textContent = this.getAttribute('user');
 
     usr.querySelector('.user-name').textContent = user.name;
