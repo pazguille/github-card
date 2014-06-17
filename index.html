@@ -44,7 +44,6 @@
         var createCard = function(user) {
           var github;
           if (user === '') { return false; }
-          inp.value = user;
           github = document.createElement('github-card');
           github.setAttribute('user', user);
           output.innerHTML = '';
