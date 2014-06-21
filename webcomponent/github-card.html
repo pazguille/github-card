@@ -98,6 +98,12 @@
     .spinner {
       background: url('webcomponent/spinner.gif') no-repeat center center;
     }
+
+    a.user-github-url,
+    a.user-repos-url,
+    a.user-followers-url {
+        text-decoration: none;
+    }
   </style>
 
   <article class="user spinner">
@@ -111,14 +117,14 @@
       <dd class="user-name"></dd>
 
       <dt>Account:</dt>
-      <dd class="user-account"></dd>
+      <a class="user-github-url"><dd class="user-account"></dd></a>
     </dl>
     <dl class="user-stats" hidden>
       <dt>Repos</dt>
-      <dd class="user-repos" data-stats="repos"></dd>
+      <a class="user-repos-url"><dd class="user-repos" data-stats="repos"></dd></a>
 
       <dt>Followers</dt>
-      <dd class="user-followers" data-stats="followers"></dd>
+      <a class="user-followers-url"><dd class="user-followers" data-stats="followers"></dd></a>
     </dl>
   </article>
 </template>
@@ -160,6 +166,10 @@
     usr.querySelector('.user').classList.remove('spinner');
     usr.querySelector('.user-data').removeAttribute('hidden');
     usr.querySelector('.user-stats').removeAttribute('hidden');
+
+    usr.querySelector('.user-github-url').href = user.html_url;
+    usr.querySelector('.user-repos-url').href = user.html_url.concat('?tab=repositories');
+    usr.querySelector('.user-followers-url').href = user.html_url.concat('/followers');
   };
 
   XgithubProto.createdCallback = function() {
