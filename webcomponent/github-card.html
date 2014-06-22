@@ -172,16 +172,19 @@
     usr.querySelector('.user-followers-url').href = user.html_url.concat('/followers');
   };
 
-  XgithubProto.createdCallback = function() {
-    var template = doc.querySelector("#github-template"),
-        usr = template.content.cloneNode(true);
-    this.shadow = this.createShadowRoot();
-    this.shadow.appendChild(usr);
-  };
+  xtag.register('github-card', {
+    lifecycle: {
+      created: function() {
+        var template = doc.querySelector("#github-template"),
+            usr = template.content.cloneNode(true);
+        this.shadow = this.createShadowRoot();
+        this.shadow.appendChild(usr);
 
-  XgithubProto.attachedCallback = function() {
-    this.getUser();
-  };
-
-  var Xgithub = doc.registerElement('github-card', {'prototype': XgithubProto});
+      },
+      inserted: function() {
+        this.getUser();
+      }
+    },
+    prototype: XgithubProto
+  });
 </script>
