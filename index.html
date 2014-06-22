@@ -186,6 +186,7 @@
       </article>
     </template>
 
+    <script src="src/x-tag-core.min.js"></script>
     <script>
       var url = 'https://api.github.com/users/',
           doc = document.currentScript.ownerDocument,
@@ -225,18 +226,22 @@
         usr.querySelector('.user-stats').removeAttribute('hidden');
       };
 
-      XgithubProto.createdCallback = function() {
-        var template = doc.querySelector("#github-template"),
-            usr = template.content.cloneNode(true);
-        this.shadow = this.createShadowRoot();
-        this.shadow.appendChild(usr);
-      };
+      xtag.register('github-card', {
+        lifecycle: {
+          created: function() {
+            var template = doc.querySelector("#github-template"),
+                usr = template.content.cloneNode(true);
+            this.shadow = this.createShadowRoot();
+            this.shadow.appendChild(usr);
 
-      XgithubProto.attachedCallback = function() {
-        this.getUser();
-      };
+          },
+          inserted: function() {
+            this.getUser();
+          }
+        },
+        prototype: XgithubProto
+      });
 
-      var Xgithub = doc.registerElement('github-card', {'prototype': XgithubProto});
     </script>
   </body>
 </html>
