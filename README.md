@@ -4,7 +4,7 @@
 
 ## How-to
 ```html
-<github-card user="pazguille"><github-card>
+<github-card user="pazguille"></github-card>
 ```
 ![Example](src/assets/example.png)
 
