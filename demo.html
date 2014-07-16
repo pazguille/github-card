@@ -7,7 +7,13 @@
     <title>&lt;github-card&gt;: A web component to show a profile-card for your Github account.</title>
     <link rel="stylesheet" href="src/normalize.css">
     <link rel="stylesheet" href="src/styles.css">
-    <link rel="import" href="webcomponent/github-card.html">
+
+    <!-- Importing Web Component's Polyfill -->
+    <script data-async="src/platform.js"></script>
+    <script data-async="src/polymer.js"></script>
+
+    <!-- Importing github-car Web Component -->
+    <link rel="import" data-async="webcomponent/github-card.html">
   </head>
   <body>
 
@@ -20,38 +26,44 @@
         <img src="src/assets/example.png" width="267" height="302">
       </figure>
     </output>
-
     <form id="create-card">
       <input id="username" type="text" placeholder="Enter a Github username">
       <button>Show</button>
     </form>
 
     <footer>
-      <iframe id="twitter" allowtransparency="true" frameborder="0" width="100" height="22" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?text=<github-card>%3A%20A%20Web%20Component%20to%20show%20a%20profile-card%20for%20your%20Github%20account.&amp;url=http%3A%2F%2Fpazguille.github.io%2Fgithub-card"></iframe>
+      <iframe id="twitter" allowtransparency="true" frameborder="0" width="100" height="22" scrolling="no" data-async="https://platform.twitter.com/widgets/tweet_button.html?text=<github-card>%3A%20A%20Web%20Component%20to%20show%20a%20profile-card%20for%20your%20Github%20account.&amp;url=http%3A%2F%2Fpazguille.github.io%2Fgithub-card"></iframe>
 
-      <a href="https://github.com/pazguille/github-card" id="github-ribbon"><img width="149" height="149" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+      <a href="https://github.com/pazguille/github-card" id="github-ribbon"><img width="149" height="149" data-async="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
       by <a href="http://pazguille.me/">Guille Paz</a> with <a href="http://welovefrontend.org/" class="heart">❤</a>
 
-      <iframe id="github-button" src="http://ghbtns.com/github-btn.html?user=pazguille&amp;repo=github-card&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="152" height="30"></iframe>
+      <iframe id="github-button" data-async="http://ghbtns.com/github-btn.html?user=pazguille&amp;repo=github-card&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="152" height="30"></iframe>
     </footer>
 
     <script>
+      /*! aload.js v1.0.0 Released under the MIT license. */!function(a){"use strict";function b(b){b=b||a.document.querySelectorAll("[data-async]"),void 0===b.length&&(b=[b]);var c,d,e=0,f=b.length;for(e;f>e;e+=1)d=b[e],c="LINK"!==d.tagName?"src":"href",d[c]=d.getAttribute("data-async"),d.removeAttribute("data-async");return b}"function"==typeof a.define&&void 0!==a.define.amd?a.define("aload",[],function(){return b}):"undefined"!=typeof module&&void 0!==module.exports?module.exports=b:a.aload=b}(this);
+
       window.onload = function() {
         var inp = document.querySelector('#username'),
             frm = document.querySelector('#create-card'),
-            output = document.querySelector('#cards');
+            output = document.querySelector('#cards'),
+            github;
 
         frm.addEventListener('submit', function(eve) {
-          var user = inp.value,
-              github;
+          var user = inp.value;
           eve.preventDefault();
+
           if (user === '') { return false; }
+          if (github) { github.setAttribute('user', user); return false; }
+
           github = document.createElement('github-card');
           github.setAttribute('user', user);
           output.innerHTML = '';
           output.appendChild(github);
         }, true);
+
+        aload();
       };
     </script>
   </body>
