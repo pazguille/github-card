@@ -1,0 +1,104 @@
+:host {
+  display: inline-block;
+}
+
+a {
+  text-decoration: none;
+  color: #999;
+}
+
+.user {
+  font-family: "Helvetica", Arial, sans-serif;
+  display: inline-block;
+  width: 265px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+  background-color: #2E353C;
+  text-align: center;
+  color: #fff;
+  font-weight: 100;
+  transition: background 1000ms ease-out;
+}
+
+.user dl,
+.user dd {
+  margin: 0;
+}
+
+.user dt {
+  display: none;
+}
+
+.user-data {
+  background: #fff url('github.png') no-repeat 5px 5px;
+  background-size: 25px;
+  height: 85px;
+  border: 1px solid #D5D5D5;
+  border-bottom:0;
+}
+
+dd.user-avatar {
+  display: inline-block;
+  margin: 20px 0 10px;
+}
+
+.user-avatar img {
+  border-radius: 100%;
+  height: 120px;
+  width: 120px;
+  border: 3px solid #fff;
+  vertical-align: middle;
+  background-color: #fff;
+}
+
+dd.user-name,
+dd.user-account {
+  margin: 5px 0;
+}
+
+.user-name {
+  font-size: 24px;
+}
+
+.user-account {
+  font-size: 16px;
+  color: #999;
+  margin: 5px 0;
+}
+
+.user-stats {
+  border-top: 1px groove #999;
+  position: relative;
+  top: 155px;
+}
+
+.user-stats dd {
+  padding: 10px 20px;
+}
+
+.user-repos,
+.user-following,
+.user-followers {
+  display: inline-block;
+  font-size: 22px;
+  color: #999;
+}
+
+.user-repos:after,
+.user-following:after,
+.user-followers:after {
+  content: attr(data-stats);
+  text-transform: uppercase;
+  display: block;
+  font-size: 11px;
+  color: #666;
+  font-weight: normal;
+  line-height: 1.7em;
+}
+
+.spinner {
+  background: url('spinner.gif') no-repeat center center;
+  border: 1px solid #D5D5D5;
+}
