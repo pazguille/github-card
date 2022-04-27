@@ -182,5 +182,8 @@
     }
   }
 
-  customElements.define('github-card', Xgithub);
+  if (!window.customElements.get('github-card')) {
+    window.Xgithub = Xgithub;
+    window.customElements.define('github-card', Xgithub)
+  }
 </script>

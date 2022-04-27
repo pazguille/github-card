@@ -177,7 +177,12 @@
         }
 
         async getUser() {
-          const user = await fetch(`https://api.github.com/users/${this.getAttribute('user')}`).then(res => res.json());
+          const user = await fetch(`https://api.github.com/users/${this.getAttribute('user')}`, {
+            headers: {
+              Authorization: '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',
+            }
+          }).then(res => res.json());
+
           this.fillUser(user);
         }
 
@@ -208,7 +213,10 @@
         }
       }
 
-      customElements.define('github-card', Xgithub);
+      if (!window.customElements.get('github-card')) {
+        window.Xgithub = Xgithub;
+        window.customElements.define('github-card', Xgithub)
+      }
     </script>
 
     <script>
