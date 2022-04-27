@@ -196,7 +196,7 @@
 
           usr.querySelector('.user-github-url').href = user.html_url;
           usr.querySelector('.user-repos-url').href = user.html_url.concat('?tab=repositories');
-          usr.querySelector('.user-followers-url').href = user.html_url.concat('/followers');
+          usr.querySelector('.user-followers-url').href = user.html_url.concat('?tab=followers');
         }
 
         connectedCallback() {
